@@ -11,7 +11,7 @@ public class SortingStudentsByGPA implements Comparator {
         int n = in.nextInt();
         name = new String[n];
         id = new int[n];
-        for (int i = 0; i < name.length-1; i++)
+        for (int i = 0; i < name.length - 1; i++)
             name[i] = in.nextLine();
         for (int i = 0; i < name.length; i++)
             id[i] = i;
@@ -22,40 +22,33 @@ public class SortingStudentsByGPA implements Comparator {
     }
 
     @Override
-    public void QuickSort(int leftBorder, int rightBorder) {
-        int leftMarker = leftBorder;
-        int rightMarker = rightBorder;
-        int pivot = id[(id[0] + id[id.length]) / 2];
-        do {
-            // Двигаем левый маркер слева направо пока элемент меньше, чем pivot
-            while (id[leftMarker] < pivot) {
-                leftMarker++;
+    public void QuickSort(int low, int high) {
+        if (id.length == 0)
+            return;
+        if (low >= high)
+            return;
+        int middle = low + (high - low) / 2;
+        int opora = id[middle];
+        int i = low, j = high;
+        while (i <= j) {
+            while (id[i] < opora) {
+                i++;
             }
-            // Двигаем правый маркер, пока элемент больше, чем pivot
-            while (id[rightMarker] > pivot) {
-                rightMarker--;
+            while (id[j] > opora) {
+                j--;
             }
-            // Проверим, не нужно обменять местами элементы, на которые указывают маркеры
-            if (leftMarker <= rightMarker) {
-                // Левый маркер будет меньше правого только если мы должны выполнить swap
-                if (leftMarker < rightMarker) {
-                    int tmp = id[leftMarker];
-                    id[leftMarker] = id[rightMarker];
-                    id[rightMarker] = tmp;
-                }
-                // Сдвигаем маркеры, чтобы получить новые границы
-                leftMarker++;
-                rightMarker--;
+            if (i <= j) {
+                int temp = id[i];
+                id[i] = id[j];
+                id[j] = temp;
+                i++;
+                j--;
             }
-        } while (leftMarker <= rightMarker);
-
-        // Выполняем рекурсивно для частей
-        if (leftMarker < rightBorder) {
-            QuickSort(leftMarker, rightBorder);
         }
-        if (leftBorder < rightMarker) {
-            QuickSort(leftBorder, rightMarker);
-        }
+        if (low < j)
+            QuickSort(low, j);
+        if (high > i)
+            QuickSort(i, high);
     }
 
     @Override
@@ -68,7 +61,7 @@ public class SortingStudentsByGPA implements Comparator {
 
     public static void main(String[] args) {
         SortingStudentsByGPA a = new SortingStudentsByGPA();
-        a.QuickSort(a.getId()[0],a.getId()[a.getId().length]);
+        a.QuickSort(a.getId()[0], a.getId()[a.getId().length]);
         System.out.println(a);
     }
 }
